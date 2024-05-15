@@ -735,6 +735,12 @@ def main():
 
     # Preprocessing the datasets.
     # We need to tokenize inputs and targets.
+    if args.dataset_name=="nlphuji/flickr30k":
+        def preprocess_flicker(examples):
+            return {"caption": examples['caption'][0]}
+        args.caption_column = "caption"
+        dataset['test'] = dataset['test'].map(preprocess_flicker)
+        dataset = dataset['test'].train_test_split(test_size=0.2, seed=42)
     column_names = dataset["train"].column_names
 
     # 6. Get the column names for input/target.
